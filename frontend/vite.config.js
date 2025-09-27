@@ -2,37 +2,42 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
-export default defineConfig({
-  plugins: [react()],
-  
-  // 🆕 GitHub Pages base path
-  base: '/Resume---building-platform/',
-  
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
-  
-  server: {
-    port: 3000,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:5001',
-        changeOrigin: true,
+export default defineConfig(({ command, mode }) => {
+  // Use different base paths for development vs build
+  const base = command === 'build' && mode === 'production' 
+    ? '/Resume---building-platform/' 
+    : '/';
+
+  return {
+    plugins: [react()],
+    
+    // Environment-specific base path
+    base: base,
+    
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
       },
     },
-  },
-  
-  build: {
-    outDir: 'dist',
-    sourcemap: true,
-    // 🆕 Ensure assets are properly referenced
-    assetsDir: 'assets',
-  },
-  
-  // 🆕 Environment-specific configuration
-  define: {
-    __IS_GITHUB_PAGES__: JSON.stringify(process.env.NODE_ENV === 'production'),
+    
+    server: {
+      port: 3000,
+      proxy: {
+        '/api': {
+          target: 'http://localhost:5001',
+          changeOrigin: true,
+        },
+      },
+    },
+    
+    build: {
+      outDir: 'dist',
+      sourcemap: true,
+      assetsDir: 'assets',
+    },
+    
+    define: {
+      __IS_GITHUB_PAGES__: JSON.stringify(mode === 'production'),
+    }
   }
 })
