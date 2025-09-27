@@ -5,8 +5,8 @@ A comprehensive full-stack web application for creating, managing, and sharing p
 ## 🚀 Live Demo & Quick Start
 
 **Demo Login Credentials:**
-- Email: `test@example.com`
-- Password: `testpassword123`
+- Email: `demo@resumebuilder.com`
+- Password: `demo123`
 
 **Test Routes (No Login Required):**
 - `/test-resume` - Simple Resume Builder
@@ -336,16 +336,5 @@ docker-compose up --build
 4. Push to branch (`git push origin feature/amazing-feature`)
 5. Open Pull Request
 
-## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 📞 Support
-
-For support and questions:
-- Create an issue on GitHub
-- Email: support@resumebuilder.com
-- Documentation: [Project Wiki]
-
----
 **Built with ❤️ using React, Node.js, and Docker**
