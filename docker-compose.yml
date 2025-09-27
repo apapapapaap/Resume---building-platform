@@ -1,0 +1,61 @@
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  database:
+    image: postgres:15
+    container_name: resume-db
+    environment:
+      POSTGRES_DB: resume_builder
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - resume-network
+
+  # Backend API
+  backend:
+    build: ./backend
+    container_name: resume-backend
+    ports:
+      - "5001:5001"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://admin:password123@database:5432/resume_builder
+      - JWT_SECRET=your-super-secret-jwt-key-here
+      - CORS_ORIGIN=http://localhost:3000
+    depends_on:
+      - database
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - resume-network
+
+  # Frontend React App
+  frontend:
+    build: ./frontend
+    container_name: resume-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5001
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - resume-network
+
+volumes:
+  postgres_data:
+
+networks:
+  resume-network:
+    driver: bridge
+
