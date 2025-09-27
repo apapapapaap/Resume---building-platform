@@ -26,7 +26,6 @@ Install frontend dependencies
 cd ../frontend
 npm install
 
-text
 
 #### **2. Database Setup**
 Create PostgreSQL database
@@ -55,6 +54,68 @@ npm run dev
 Backend runs on http://localhost:5001
 Terminal 2: Start Frontend
 cd frontend
+npm run dev
+
+text
+### **🗄️ Database Setup Options**
+
+#### **Option 1: Local PostgreSQL (Recommended)**
+Install PostgreSQL (Mac)
+brew install postgresql
+brew services start postgresql
+
+Create database
+createdb resume_builder
+
+Update backend/.env with your credentials
+DATABASE_URL=postgresql://your-username@localhost:5432/resume_builder
+
+text
+
+#### **Option 2: Docker PostgreSQL (Easiest)**
+Run PostgreSQL in Docker
+docker run --name resume-db
+-e POSTGRES_DB=resume_builder
+-e POSTGRES_USER=admin
+-e POSTGRES_PASSWORD=password123
+-p 5432:5432
+-d postgres:15
+
+Update backend/.env
+DATABASE_URL=postgresql://admin:password123@localhost:5432/resume_builder
+
+
+#### **Option 3: Use Docker Compose**
+Start everything including database
+docker-compose up --build
+
+
+#### **⚠️ If No Database Available:**
+- Server will start but show database connection errors
+- Frontend still works for UI testing
+- Limited functionality without database
+- Tables will be auto-created once database is connected
+🚀 Quick Fix Commands for You Right Now
+bash
+# 1. Create .env file
+cd backend
+cp .env.example .env
+
+# 2. Update with your PostgreSQL credentials
+# Edit .env file with your database details
+
+# 3. Or use Docker for quick setup
+docker run --name resume-db \
+  -e POSTGRES_DB=resume_builder \
+  -e POSTGRES_USER=admin \
+  -e POSTGRES_PASSWORD=password123 \
+  -p 5432:5432 \
+  -d postgres:15
+
+# 4. Update .env with Docker credentials
+echo "DATABASE_URL=postgresql://admin:password123@localhost:5432/resume_builder" >> .env
+
+# 5. Restart backend
 npm run dev
 
 Frontend runs on http://localhost:3000
